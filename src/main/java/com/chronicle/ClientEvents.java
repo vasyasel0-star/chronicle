@@ -34,7 +34,7 @@ public final class ClientEvents {
 
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut e) {
         LocalPlayer p = e.getPlayer();
-        ClientPacketListener c = e.getConnection();
+    ClientPacketListener c = Minecraft.getInstance().getConnection();
         if (p != null && c != null) snapshot(p, c);
         world = null;
     }
