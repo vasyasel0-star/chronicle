@@ -42,10 +42,14 @@ public final class Metrics {
 
     // ---------- чтение статистики ----------
 
-    /** Значение кастомной статистики по id (0, если такой статистики нет в этой версии). */
+    /**
+     * Значение кастомной статистики по id (0, если такой статистики нет в этой версии).
+     * Важно: берём именно зарегистрированный экземпляр ResourceLocation из реестра,
+     * иначе Stat не найдёт ключ в реестре и упадёт с NullPointerException.
+     */
     public static long custom(StatsCounter s, String path) {
-        ResourceLocation id = ResourceLocation.withDefaultNamespace(path);
-        if (!BuiltInRegistries.CUSTOM_STAT.containsKey(id)) return 0;
+        ResourceLocation id = BuiltInRegistries.CUSTOM_STAT.get(ResourceLocation.withDefaultNamespace(path));
+        if (id == null) return 0;
         return s.getValue(Stats.CUSTOM.get(id));
     }
 
@@ -56,7 +60,7 @@ public final class Metrics {
     /** Сумма всех статистик вида *_one_cm. */
     public static long distance(StatsCounter s) {
         long sum = 0;
-        for (ResourceLocation id : BuiltInRegistries.CUSTOM_STAT.keySet()) {
+        for (ResourceLocation id : BuiltInRegistries.CUSTOM_STAT) {
             if (id.getPath().endsWith("_one_cm")) {
                 sum += s.getValue(Stats.CUSTOM.get(id));
             }
