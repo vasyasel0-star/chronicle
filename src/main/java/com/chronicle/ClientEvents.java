@@ -4,7 +4,13 @@ import com.mojang.blaze3d.platform.InputConstants;
 import java.util.Map;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.components.Tooltip;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.network.chat.Component;
+import net.neoforged.neoforge.client.event.ScreenEvent;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.protocol.game.ServerboundClientCommandPacket;
 import net.neoforged.neoforge.client.event.ClientPlayerNetworkEvent;
@@ -34,7 +40,7 @@ public final class ClientEvents {
 
     public static void onLogout(ClientPlayerNetworkEvent.LoggingOut e) {
         LocalPlayer p = e.getPlayer();
-    ClientPacketListener c = Minecraft.getInstance().getConnection();
+        ClientPacketListener c = Minecraft.getInstance().getConnection();
         if (p != null && c != null) snapshot(p, c);
         world = null;
     }
@@ -55,6 +61,40 @@ public final class ClientEvents {
         } else if (ticks == 100 || ticks % 1200 == 40) {
             snapshot(mc.player, mc.getConnection());
         }
+    }
+
+    /** Ванильные экраны «Достижения» (клавиша L) и «Статистика» заменяем нашим. */
+    public static void onScreenOpening(ScreenEvent.Opening e) {
+        Screen n = e.getNewScreen();
+        String name = n.getClass().getSimpleName();
+        if (name.equals("AdvancementsScreen")) {
+            e.setNewScreen(new ChronicleScreen(e.getCurrentScreen(), ChronicleScreen.ADV, 0));
+        } else if (name.equals("StatsScreen")) {
+            e.setNewScreen(new ChronicleScreen(e.getCurrentScreen(), ChronicleScreen.WORLD, 0));
+        }
+    }
+
+    /** Маленькая кнопка в главном меню, настройках и при создании мира. */
+    public static void onScreenInit(ScreenEvent.Init.Post e) {
+        Screen s = e.getScreen();
+        String name = s.getClass().getSimpleName();
+        int x;
+        int y;
+        if (s instanceof TitleScreen) {
+            x = s.width / 2 + 104;
+            y = s.height / 4 + 48;
+        } else if (name.equals("OptionsScreen") || name.equals("CreateWorldScreen")) {
+            x = s.width - 24;
+            y = 4;
+        } else {
+            return;
+        }
+        Button b = Button.builder(Component.literal("Σ"),
+                        btn -> Minecraft.getInstance().setScreen(new ChronicleScreen(s, ChronicleScreen.ALL, 0)))
+                .bounds(x, y, 20, 20)
+                .tooltip(Tooltip.create(Component.translatable("chronicle.button")))
+                .build();
+        e.addListener(b);
     }
 
     public static void requestStats() {

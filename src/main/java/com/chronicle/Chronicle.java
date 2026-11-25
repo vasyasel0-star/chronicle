@@ -15,5 +15,7 @@ public class Chronicle {
         NeoForge.EVENT_BUS.addListener(ClientEvents::onTick);
         NeoForge.EVENT_BUS.addListener(ClientEvents::onLogin);
         NeoForge.EVENT_BUS.addListener(ClientEvents::onLogout);
+        NeoForge.EVENT_BUS.addListener(ClientEvents::onScreenOpening);
+        NeoForge.EVENT_BUS.addListener(ClientEvents::onScreenInit);
     }
 }
