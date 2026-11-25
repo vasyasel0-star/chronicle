@@ -27,10 +27,15 @@ import net.minecraft.stats.StatType;
 import net.minecraft.stats.Stats;
 import net.minecraft.stats.StatsCounter;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.item.ItemStack;
 
 /** Собирает страницы статистики для обеих вкладок. */
 public final class PageBuilder {
-    public record Page(Component title, List<Row> rows) {}
+    public record Page(Component title, List<Row> rows, ItemStack icon) {
+        public Page(Component title, List<Row> rows) {
+            this(title, rows, ItemStack.EMPTY);
+        }
+    }
 
     private static final DateTimeFormatter DATE = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm");
 

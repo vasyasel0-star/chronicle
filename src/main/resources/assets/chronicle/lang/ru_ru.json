@@ -89,7 +89,7 @@
   "chronicle.adv.total": "Всего",
   "chronicle.adv.progress": "Прогресс",
   "chronicle.adv.done": "Готово",
-  "chronicle.adv.hint": "Выбери категорию слева: у невыполненных есть совет",
+  "chronicle.adv.hint": "Нажми на категорию, чтобы открыть список",
   "chronicle.set.header": "Оформление",
   "chronicle.set.accent": "Цвет акцента",
   "chronicle.set.bg": "Цвет фона",
@@ -161,5 +161,13 @@
   "chronicle.tip.husbandry.wax_on": "Нанеси соты на медный блок",
   "chronicle.tip.husbandry.wax_off": "Топором сними воск с медного блока",
   "chronicle.tip.husbandry.make_a_sign_glow": "Светящийся мешочек с чернилами на табличку",
-  "chronicle.tip.husbandry.silk_touch_nest": "Сломай гнездо с пчёлами Шёлковым касанием"
+  "chronicle.tip.husbandry.silk_touch_nest": "Сломай гнездо с пчёлами Шёлковым касанием",
+  "chronicle.filter.all": "Все",
+  "chronicle.filter.remaining": "Осталось",
+  "chronicle.filter.done": "Выполнено",
+  "chronicle.adv.remaining": "Осталось",
+  "chronicle.adv.completed": "Выполнено",
+  "chronicle.adv.available": "Доступно",
+  "chronicle.adv.locked": "Сначала другое",
+  "chronicle.tip.label": "Совет: "
 }

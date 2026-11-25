@@ -89,7 +89,7 @@
   "chronicle.adv.total": "Total",
   "chronicle.adv.progress": "Progress",
   "chronicle.adv.done": "Done",
-  "chronicle.adv.hint": "Pick a category on the left: unfinished ones have a tip",
+  "chronicle.adv.hint": "Click a category to open its list",
   "chronicle.set.header": "Appearance",
   "chronicle.set.accent": "Accent color",
   "chronicle.set.bg": "Background color",
@@ -161,5 +161,13 @@
   "chronicle.tip.husbandry.wax_on": "Apply honeycomb to a copper block",
   "chronicle.tip.husbandry.wax_off": "Scrape wax off copper with an axe",
   "chronicle.tip.husbandry.make_a_sign_glow": "Glow ink sac on a sign",
-  "chronicle.tip.husbandry.silk_touch_nest": "Break a bee nest with Silk Touch"
+  "chronicle.tip.husbandry.silk_touch_nest": "Break a bee nest with Silk Touch",
+  "chronicle.filter.all": "All",
+  "chronicle.filter.remaining": "Remaining",
+  "chronicle.filter.done": "Done",
+  "chronicle.adv.remaining": "Remaining",
+  "chronicle.adv.completed": "Completed",
+  "chronicle.adv.available": "Available",
+  "chronicle.adv.locked": "Needs another first",
+  "chronicle.tip.label": "Tip: "
 }
