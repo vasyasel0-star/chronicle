@@ -10,7 +10,8 @@ public record Row(Kind kind, Component label, String value, float frac, Card car
 
     /** Карточка достижения (иконка, название, описание, совет, статус). */
     public record Card(ItemStack icon, Component title, Component desc, Component tip,
-                       String badge, int badgeColor, boolean done, float frac) {}
+                       String badge, int badgeColor, boolean done, float frac,
+                       String id, int mode) {} // mode: 0 полная, 1 компактная, 2 компактная раскрытая
 
     public static Row header(Component t) {
         return new Row(Kind.HEADER, t, "", 0f, null);

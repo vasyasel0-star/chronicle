@@ -31,9 +31,13 @@ import net.minecraft.world.item.ItemStack;
 
 /** Собирает страницы статистики для обеих вкладок. */
 public final class PageBuilder {
-    public record Page(Component title, List<Row> rows, ItemStack icon) {
+    public record Page(Component title, List<Row> rows, ItemStack icon, List<AdvItem> items) {
         public Page(Component title, List<Row> rows) {
-            this(title, rows, ItemStack.EMPTY);
+            this(title, rows, ItemStack.EMPTY, null);
+        }
+
+        public Page(Component title, List<Row> rows, ItemStack icon) {
+            this(title, rows, icon, null);
         }
     }
 

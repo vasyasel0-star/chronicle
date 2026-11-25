@@ -173,5 +173,13 @@
   "chronicle.set.repl_adv": "Custom advancements window",
   "chronicle.set.repl_stats": "Custom statistics window",
   "chronicle.cfg.title": "Chronicle: settings",
-  "chronicle.cfg.open": "Open statistics and advancements"
+  "chronicle.cfg.open": "Open statistics and advancements",
+  "chronicle.set.adv_style": "Advancements view",
+  "chronicle.style.cards": "Cards",
+  "chronicle.style.checklist": "Checklist",
+  "chronicle.style.grid": "Grid",
+  "chronicle.style.tree": "Tree",
+  "chronicle.adv.view": "View",
+  "chronicle.adv.pick": "Hover or click an advancement",
+  "chronicle.adv.mod": "Mod:"
 }

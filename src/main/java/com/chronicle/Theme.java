@@ -17,7 +17,10 @@ public final class Theme {
         public boolean dim = true;
         public boolean replaceAdv = true;
         public boolean replaceStats = true;
+        public int advStyle = 0;
     }
+
+    public static final String[] STYLE_KEYS = {"cards", "checklist", "grid", "tree"};
 
     public static final int[] ACCENTS = {
         0xE6A23C, 0xE5484D, 0x46C37B, 0x4C9AFF, 0xA06BFF, 0x3CC8D8, 0xF06BB0, 0xE8EAED
@@ -53,6 +56,7 @@ public final class Theme {
             cfg.accent = Math.floorMod(cfg.accent, ACCENTS.length);
             cfg.bg = Math.floorMod(cfg.bg, BGS.length);
             cfg.opacity = Math.max(0, Math.min(OPACITY.length - 1, cfg.opacity));
+            cfg.advStyle = Math.floorMod(cfg.advStyle, STYLE_KEYS.length);
         }
         return cfg;
     }
@@ -67,6 +71,7 @@ public final class Theme {
             case 3 -> c.dim = !c.dim;
             case 4 -> c.replaceAdv = !c.replaceAdv;
             case 5 -> c.replaceStats = !c.replaceStats;
+            case 6 -> c.advStyle = Math.floorMod(c.advStyle + dir, STYLE_KEYS.length);
             default -> {
                 return;
             }

@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 
 /** Окно настроек мода в списке модов (Mods → Chronicle → Config). */
 public class ChronicleConfigScreen extends Screen {
-    private static final int COUNT = 6;
+    private static final int COUNT = 7;
     private final Screen parent;
 
     public ChronicleConfigScreen(Screen parent) {
@@ -42,9 +42,13 @@ public class ChronicleConfigScreen extends Screen {
                 key = "set.repl_adv";
                 value = onOff(c.replaceAdv);
             }
-            default -> {
+            case 5 -> {
                 key = "set.repl_stats";
                 value = onOff(c.replaceStats);
+            }
+            default -> {
+                key = "set.adv_style";
+                value = I18n.get("chronicle.style." + Theme.STYLE_KEYS[c.advStyle]);
             }
         }
         return Component.translatable("chronicle." + key).append(": " + value);

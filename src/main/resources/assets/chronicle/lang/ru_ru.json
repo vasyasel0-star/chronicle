@@ -173,5 +173,13 @@
   "chronicle.set.repl_adv": "Своё окно достижений",
   "chronicle.set.repl_stats": "Своё окно статистики",
   "chronicle.cfg.title": "Chronicle: настройки",
-  "chronicle.cfg.open": "Открыть статистику и достижения"
+  "chronicle.cfg.open": "Открыть статистику и достижения",
+  "chronicle.set.adv_style": "Вид достижений",
+  "chronicle.style.cards": "Карточки",
+  "chronicle.style.checklist": "Список",
+  "chronicle.style.grid": "Сетка",
+  "chronicle.style.tree": "Дерево",
+  "chronicle.adv.view": "Вид",
+  "chronicle.adv.pick": "Наведи на достижение или нажми на него",
+  "chronicle.adv.mod": "Мод:"
 }
