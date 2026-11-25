@@ -15,6 +15,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientAdvancements;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,7 +33,7 @@ public final class ExtraPages {
 
     private ExtraPages() {}
 
-    private static Component t(String key) {
+    private static MutableComponent t(String key) {
         return Component.translatable("chronicle." + key);
     }
 
