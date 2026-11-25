@@ -169,5 +169,9 @@
   "chronicle.adv.completed": "Completed",
   "chronicle.adv.available": "Available",
   "chronicle.adv.locked": "Needs another first",
-  "chronicle.tip.label": "Tip: "
+  "chronicle.tip.label": "Tip: ",
+  "chronicle.set.repl_adv": "Custom advancements window",
+  "chronicle.set.repl_stats": "Custom statistics window",
+  "chronicle.cfg.title": "Chronicle: settings",
+  "chronicle.cfg.open": "Open statistics and advancements"
 }

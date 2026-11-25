@@ -183,6 +183,8 @@ public final class ExtraPages {
         r.add(Row.of(t("set.bg"), I18n.get("chronicle.color." + Theme.BG_KEYS[c.bg])));
         r.add(Row.of(t("set.opacity"), Theme.OPACITY[c.opacity] + "%"));
         r.add(Row.of(t("set.dim"), I18n.get(c.dim ? "chronicle.set.on" : "chronicle.set.off")));
+        r.add(Row.of(t("set.repl_adv"), I18n.get(c.replaceAdv ? "chronicle.set.on" : "chronicle.set.off")));
+        r.add(Row.of(t("set.repl_stats"), I18n.get(c.replaceStats ? "chronicle.set.on" : "chronicle.set.off")));
         r.add(Row.spacer());
         r.add(Row.note(t("set.hint")));
         return List.of(new PageBuilder.Page(t("set.header"), r));

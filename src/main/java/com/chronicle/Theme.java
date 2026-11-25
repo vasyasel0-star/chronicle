@@ -15,6 +15,8 @@ public final class Theme {
         public int bg = 0;
         public int opacity = 4;
         public boolean dim = true;
+        public boolean replaceAdv = true;
+        public boolean replaceStats = true;
     }
 
     public static final int[] ACCENTS = {
@@ -63,6 +65,8 @@ public final class Theme {
             case 1 -> c.bg = Math.floorMod(c.bg + dir, BGS.length);
             case 2 -> c.opacity = Math.floorMod(c.opacity + dir, OPACITY.length);
             case 3 -> c.dim = !c.dim;
+            case 4 -> c.replaceAdv = !c.replaceAdv;
+            case 5 -> c.replaceStats = !c.replaceStats;
             default -> {
                 return;
             }

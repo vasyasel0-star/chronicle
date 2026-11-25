@@ -67,9 +67,9 @@ public final class ClientEvents {
     public static void onScreenOpening(ScreenEvent.Opening e) {
         Screen n = e.getNewScreen();
         String name = n.getClass().getSimpleName();
-        if (name.equals("AdvancementsScreen")) {
+        if (name.equals("AdvancementsScreen") && Theme.cfg().replaceAdv) {
             e.setNewScreen(new ChronicleScreen(e.getCurrentScreen(), ChronicleScreen.ADV, 0));
-        } else if (name.equals("StatsScreen")) {
+        } else if (name.equals("StatsScreen") && Theme.cfg().replaceStats) {
             e.setNewScreen(new ChronicleScreen(e.getCurrentScreen(), ChronicleScreen.WORLD, 0));
         }
     }
