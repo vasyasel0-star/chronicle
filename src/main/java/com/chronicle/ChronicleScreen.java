@@ -136,7 +136,7 @@ public class ChronicleScreen extends Screen {
         }
         tabX = new int[tabLabels.length];
         tabW = new int[tabLabels.length];
-        int x = px + pw - 12;
+        int x = px + pw - 12 - TAB_H - 6; // справа от вкладок остаётся место под крестик
         for (int i = tabLabels.length - 1; i >= 0; i--) {
             tabW[i] = font.width(tabLabels[i]) + 14;
             x -= tabW[i];
@@ -367,6 +367,11 @@ public class ChronicleScreen extends Screen {
 
         g.drawString(font, subtitle(), px + 12, py + 28, DIM, false);
 
+        // крестик закрытия
+        boolean xHover = inside(mx, my, closeX(), py + 12, TAB_H, TAB_H);
+        g.fill(closeX(), py + 12, closeX() + TAB_H, py + 12 + TAB_H, xHover ? 0xFFB23A3A : 0xFF22262C);
+        g.drawString(font, "X", closeX() + (TAB_H - font.width("X")) / 2 + 1, py + 16, WHITE, false);
+
         for (int i = 0; i < tabLabels.length; i++) {
             boolean link = i == linkTab;
             boolean on = !link && tabScopes[i] == scope;
@@ -474,12 +479,13 @@ public class ChronicleScreen extends Screen {
         g.disableScissor();
 
         if (maxScroll > 0) {
-            int tx = cx + cw + 4;
-            g.fill(tx, top, tx + 3, top + ch, 0xFF22262C);
+            int tx = cx + cw + 3;
+            boolean barHover = draggingBar || inside(mx, my, cx + cw + 1, top, 12, ch);
+            g.fill(tx, top, tx + 6, top + ch, 0xFF22262C);
             int total = maxScroll + ch - 4;
             int thumb = Math.max(16, ch * ch / Math.max(total, 1));
             int ty = top + (int) ((ch - thumb) * (scroll / maxScroll));
-            g.fill(tx, ty, tx + 3, ty + thumb, Theme.accent());
+            g.fill(tx, ty, tx + 6, ty + thumb, barHover ? WHITE : Theme.accent());
         }
     }
 
@@ -706,6 +712,33 @@ public class ChronicleScreen extends Screen {
         panX = 0;
     }
 
+    private int closeX() {
+        return px + pw - 12 - TAB_H;
+    }
+
+    // ---------- полоса прокрутки (тянется мышью) ----------
+
+    private boolean draggingBar;
+
+    private boolean overBar(double mx, double my) {
+        return maxScroll > 0 && !customView()
+                && inside(mx, my, cx() + cw() + 1, ctop(), 12, cheight());
+    }
+
+    private void dragBarTo(double my) {
+        int ch = cheight();
+        int total = maxScroll + ch - 4;
+        int thumb = Math.max(16, ch * ch / Math.max(total, 1));
+        double ratio = (my - ctop() - thumb / 2.0) / Math.max(1, ch - thumb);
+        scroll = Mth.clamp(ratio, 0.0, 1.0) * maxScroll;
+    }
+
+    @Override
+    public boolean mouseReleased(double mx, double my, int button) {
+        draggingBar = false;
+        return super.mouseReleased(mx, my, button);
+    }
+
     private void activateTab(int i) {
         if (i == linkTab) { // переход между окнами «Статистика» и «Достижения»
             if (advMode) {
@@ -727,6 +760,15 @@ public class ChronicleScreen extends Screen {
     @Override
     public boolean mouseClicked(double mx, double my, int button) {
         if (button == 0) {
+            if (inside(mx, my, closeX(), py + 12, TAB_H, TAB_H)) {
+                onClose();
+                return true;
+            }
+            if (overBar(mx, my)) {
+                draggingBar = true;
+                dragBarTo(my);
+                return true;
+            }
             for (int i = 0; i < tabLabels.length; i++) {
                 if (inside(mx, my, tabX[i], py + 12, tabW[i], TAB_H)) {
                     activateTab(i);
@@ -796,6 +838,10 @@ public class ChronicleScreen extends Screen {
 
     @Override
     public boolean mouseDragged(double mx, double my, int button, double dx, double dy) {
+        if (button == 0 && draggingBar) {
+            dragBarTo(my);
+            return true;
+        }
         if (button == 0 && customView() && inside(mx, my, cx(), ctop(), cw(), viewH())) {
             panX = Mth.clamp(panX - dx, 0.0, (double) maxPanX);
             scroll = Mth.clamp(scroll - dy, 0.0, (double) maxScroll);
