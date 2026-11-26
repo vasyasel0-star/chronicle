@@ -75,18 +75,8 @@ public final class ExtraPages {
     }
 
     private static Row.Card card(AdvItem a, int mode) {
-        String badge;
-        int color;
-        if (a.done()) {
-            badge = I18n.get("chronicle.adv.done");
-            color = GREEN;
-        } else if (a.avail()) {
-            badge = I18n.get("chronicle.adv.available");
-            color = Theme.accent();
-        } else {
-            badge = I18n.get("chronicle.adv.locked");
-            color = GRAY;
-        }
+        String badge = I18n.get(a.done() ? "chronicle.adv.done" : "chronicle.adv.todo");
+        int color = a.done() ? GREEN : GRAY;
         return new Row.Card(a.icon(), a.title(), a.desc(), a.done() ? null : a.tip(), badge, color,
                 a.done(), -1f, a.id(), mode);
     }
@@ -180,8 +170,7 @@ public final class ExtraPages {
             List<AdvItem> todo = new ArrayList<>();
             List<AdvItem> done = new ArrayList<>();
             for (AdvItem a : g.kids()) (a.done() ? done : todo).add(a);
-            todo.sort(Comparator.comparing((AdvItem a) -> !a.avail()).thenComparingInt(AdvItem::depth)
-                    .thenComparing(AdvItem::id));
+            todo.sort(Comparator.comparingInt(AdvItem::depth).thenComparing(AdvItem::id));
             done.sort(Comparator.comparingInt(AdvItem::depth).thenComparing(AdvItem::id));
 
             int total = todo.size() + done.size();
@@ -190,7 +179,7 @@ public final class ExtraPages {
             if (g.mod() != null) r.add(Row.note(t("adv.mod").append(" " + g.mod())));
             r.add(Row.bar(t("adv.progress"), pct(done.size(), total),
                     total == 0 ? 0f : done.size() / (float) total));
-            if (style < 2) { // карточки и список строятся строками, сетка и дерево рисуются экраном
+            if (style == 0) { // карточки строятся строками, древо рисуется самим экраном
                 r.add(Row.spacer());
                 if (filter != 2 && !todo.isEmpty()) {
                     r.add(Row.header(t("adv.remaining").append(" (" + todo.size() + ")")));
@@ -210,8 +199,7 @@ public final class ExtraPages {
     }
 
     private static int mode(int style, AdvItem a, Set<String> expanded) {
-        if (style == 0) return 0;
-        return expanded.contains(a.id()) ? 2 : 1;
+        return expanded.contains(a.id()) ? 2 : 0;
     }
 
     public static List<PageBuilder.Page> settings() {

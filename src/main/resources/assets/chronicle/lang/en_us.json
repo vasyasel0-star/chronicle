@@ -82,7 +82,7 @@
   "chronicle.unit.hp": "HP",
   "chronicle.tab.adv": "Advancements",
   "chronicle.tab.settings": "Settings",
-  "chronicle.sub.adv": "Advancements with completion tips",
+  "chronicle.sub.adv": "Tips on how to complete advancements",
   "chronicle.sub.settings": "Appearance and options",
   "chronicle.button": "Statistics and advancements",
   "chronicle.adv.overview": "Overview",
@@ -181,5 +181,14 @@
   "chronicle.style.tree": "Tree",
   "chronicle.adv.view": "View",
   "chronicle.adv.pick": "Hover or click an advancement",
-  "chronicle.adv.mod": "Mod:"
+  "chronicle.adv.mod": "Mod:",
+  "chronicle.title_adv": "ADVANCEMENTS",
+  "chronicle.tab.to_stats": "< Statistics",
+  "chronicle.tab.to_adv": "Advancements >",
+  "chronicle.adv.tip_title": "Tip",
+  "chronicle.adv.todo": "Not done",
+  "chronicle.title.adv": "ADVANCEMENTS",
+  "chronicle.tab.adv_link": "Advancements >",
+  "chronicle.tab.stats_link": "< Statistics",
+  "chronicle.adv.tip_toggle": "Tip"
 }

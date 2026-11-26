@@ -82,7 +82,7 @@
   "chronicle.unit.hp": "HP",
   "chronicle.tab.adv": "Достижения",
   "chronicle.tab.settings": "Настройки",
-  "chronicle.sub.adv": "Достижения с советами по выполнению",
+  "chronicle.sub.adv": "Подсказки, как выполнить достижения",
   "chronicle.sub.settings": "Оформление и параметры",
   "chronicle.button": "Статистика и достижения",
   "chronicle.adv.overview": "Обзор",
@@ -178,8 +178,17 @@
   "chronicle.style.cards": "Карточки",
   "chronicle.style.checklist": "Список",
   "chronicle.style.grid": "Сетка",
-  "chronicle.style.tree": "Дерево",
+  "chronicle.style.tree": "Древо",
   "chronicle.adv.view": "Вид",
   "chronicle.adv.pick": "Наведи на достижение или нажми на него",
-  "chronicle.adv.mod": "Мод:"
+  "chronicle.adv.mod": "Мод:",
+  "chronicle.title_adv": "ДОСТИЖЕНИЯ",
+  "chronicle.tab.to_stats": "< Статистика",
+  "chronicle.tab.to_adv": "Достижения >",
+  "chronicle.adv.tip_title": "Совет",
+  "chronicle.adv.todo": "Не выполнено",
+  "chronicle.title.adv": "ДОСТИЖЕНИЯ",
+  "chronicle.tab.adv_link": "Достижения >",
+  "chronicle.tab.stats_link": "< Статистика",
+  "chronicle.adv.tip_toggle": "Совет"
 }

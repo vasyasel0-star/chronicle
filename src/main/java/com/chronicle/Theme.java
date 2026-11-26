@@ -20,7 +20,7 @@ public final class Theme {
         public int advStyle = 0;
     }
 
-    public static final String[] STYLE_KEYS = {"cards", "checklist", "grid", "tree"};
+    public static final String[] STYLE_KEYS = {"cards", "tree"};
 
     public static final int[] ACCENTS = {
         0xE6A23C, 0xE5484D, 0x46C37B, 0x4C9AFF, 0xA06BFF, 0x3CC8D8, 0xF06BB0, 0xE8EAED
