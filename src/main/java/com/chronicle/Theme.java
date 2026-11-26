@@ -18,6 +18,7 @@ public final class Theme {
         public boolean replaceAdv = true;
         public boolean replaceStats = true;
         public int advStyle = 0;
+        public boolean round = false;
     }
 
     public static final String[] STYLE_KEYS = {"cards", "tree"};
@@ -72,6 +73,7 @@ public final class Theme {
             case 4 -> c.replaceAdv = !c.replaceAdv;
             case 5 -> c.replaceStats = !c.replaceStats;
             case 6 -> c.advStyle = Math.floorMod(c.advStyle + dir, STYLE_KEYS.length);
+            case 7 -> c.round = !c.round;
             default -> {
                 return;
             }

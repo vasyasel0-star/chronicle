@@ -293,6 +293,21 @@ public class ChronicleScreen extends Screen {
         panX = Mth.clamp(panX, 0.0, (double) maxPanX);
     }
 
+    /** Прямоугольник со срезанными (скруглёнными) углами по флагам. */
+    private static void rr(GuiGraphics g, int x1, int y1, int x2, int y2, int c,
+                           boolean tl, boolean tr, boolean bl, boolean br) {
+        if (y2 - y1 < 8) {
+            g.fill(x1, y1, x2, y2, c);
+            return;
+        }
+        g.fill(x1, y1 + 3, x2, y2 - 3, c);
+        for (int i = 0; i < 3; i++) {
+            int in = 3 - i;
+            g.fill(x1 + (tl ? in : 0), y1 + i, x2 - (tr ? in : 0), y1 + i + 1, c);
+            g.fill(x1 + (bl ? in : 0), y2 - i - 1, x2 - (br ? in : 0), y2 - i, c);
+        }
+    }
+
     private int onAccent() {
         int c = Theme.accent();
         int l = ((c >> 16 & 255) * 299 + (c >> 8 & 255) * 587 + (c & 255) * 114) / 1000;
@@ -362,8 +377,9 @@ public class ChronicleScreen extends Screen {
     public void render(GuiGraphics g, int mx, int my, float partial) {
         super.render(g, mx, my, partial);
 
-        g.fill(px - 1, py - 1, px + pw + 1, py + ph + 1, Theme.border());
-        g.fill(px, py, px + pw, py + ph, Theme.shade(0f));
+        boolean rd = Theme.cfg().round;
+        rr(g, px - 1, py - 1, px + pw + 1, py + ph + 1, Theme.border(), rd, rd, rd, rd);
+        rr(g, px, py, px + pw, py + ph, Theme.shade(0f), rd, rd, rd, rd);
 
         renderHeader(g, mx, my);
         renderSidebar(g, mx, my);
@@ -407,9 +423,10 @@ public class ChronicleScreen extends Screen {
     }
 
     private void renderHeader(GuiGraphics g, int mx, int my) {
-        g.fill(px, py, px + pw, py + HEAD, Theme.shade(0.05f));
+        boolean rd = Theme.cfg().round;
+        rr(g, px, py, px + pw, py + HEAD, Theme.shade(0.05f), rd, rd, false, false);
         g.fill(px, py + HEAD, px + pw, py + HEAD + 1, Theme.accent());
-        g.fill(px, py, px + 3, py + HEAD, Theme.accent());
+        rr(g, px, py, px + 3, py + HEAD, Theme.accent(), rd, false, false, false);
 
         PoseStack ps = g.pose();
         ps.pushPose();
@@ -451,7 +468,7 @@ public class ChronicleScreen extends Screen {
     }
 
     private void renderSidebar(GuiGraphics g, int mx, int my) {
-        g.fill(px, py + HEAD + 1, px + SIDE, py + ph, Theme.shade(-0.2f));
+        rr(g, px, py + HEAD + 1, px + SIDE, py + ph, Theme.shade(-0.2f), false, false, Theme.cfg().round, false);
         g.fill(px + SIDE, py + HEAD + 1, px + SIDE + 1, py + ph, Theme.shade(0.1f));
 
         for (int i = 0; i < pages.size(); i++) {

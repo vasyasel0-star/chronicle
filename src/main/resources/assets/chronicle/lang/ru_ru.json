@@ -201,5 +201,6 @@
   "chronicle.srch.picked": "подобрано",
   "chronicle.srch.dropped": "выброшено",
   "chronicle.srch.killed": "убито",
-  "chronicle.srch.killed_by": "убил вас"
+  "chronicle.srch.killed_by": "убил вас",
+  "chronicle.set.round": "Скруглённые углы"
 }

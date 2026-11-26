@@ -9,7 +9,7 @@ import net.minecraft.network.chat.Component;
 
 /** Окно настроек мода в списке модов (Mods → Chronicle → Config). */
 public class ChronicleConfigScreen extends Screen {
-    private static final int COUNT = 7;
+    private static final int COUNT = 8;
     private final Screen parent;
 
     public ChronicleConfigScreen(Screen parent) {
@@ -45,6 +45,10 @@ public class ChronicleConfigScreen extends Screen {
             case 5 -> {
                 key = "set.repl_stats";
                 value = onOff(c.replaceStats);
+            }
+            case 7 -> {
+                key = "set.round";
+                value = onOff(c.round);
             }
             default -> {
                 key = "set.adv_style";

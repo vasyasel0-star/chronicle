@@ -238,6 +238,7 @@ public final class ExtraPages {
         r.add(Row.of(t("set.repl_adv"), I18n.get(c.replaceAdv ? "chronicle.set.on" : "chronicle.set.off")));
         r.add(Row.of(t("set.repl_stats"), I18n.get(c.replaceStats ? "chronicle.set.on" : "chronicle.set.off")));
         r.add(Row.of(t("set.adv_style"), I18n.get("chronicle.style." + Theme.STYLE_KEYS[c.advStyle])));
+        r.add(Row.of(t("set.round"), I18n.get(c.round ? "chronicle.set.on" : "chronicle.set.off")));
         r.add(Row.spacer());
         r.add(Row.note(t("set.hint")));
         return List.of(new PageBuilder.Page(t("set.header"), r));

@@ -201,5 +201,6 @@
   "chronicle.srch.picked": "picked up",
   "chronicle.srch.dropped": "dropped",
   "chronicle.srch.killed": "killed",
-  "chronicle.srch.killed_by": "killed you"
+  "chronicle.srch.killed_by": "killed you",
+  "chronicle.set.round": "Rounded corners"
 }
