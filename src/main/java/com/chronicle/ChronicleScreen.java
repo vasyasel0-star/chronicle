@@ -115,7 +115,7 @@ public class ChronicleScreen extends Screen {
         py = (height - ph) / 2;
 
         layoutTabs();
-        box = new EditBox(font, closeX() - 3 - 150, py + 28, 150, 12, Component.empty());
+        box = new EditBox(font, closeX() - 3 - 150, py + 29, 150, 12, Component.empty());
         box.setMaxLength(40);
         box.setHint(Component.translatable("chronicle.search.hint"));
         box.setValue(query);
@@ -293,6 +293,12 @@ public class ChronicleScreen extends Screen {
         panX = Mth.clamp(panX, 0.0, (double) maxPanX);
     }
 
+    private int onAccent() {
+        int c = Theme.accent();
+        int l = ((c >> 16 & 255) * 299 + (c >> 8 & 255) * 587 + (c & 255) * 114) / 1000;
+        return l > 140 ? 0xFF000000 : 0xFFFFFFFF;
+    }
+
     private boolean searching() {
         return searchOpen && scope != SET && !query.isBlank();
     }
@@ -415,17 +421,17 @@ public class ChronicleScreen extends Screen {
         if (!searchOpen) g.drawString(font, subtitle(), px + 12, py + 28, DIM, false);
 
         if (scope != SET) {
-            boolean lh = inside(mx, my, closeX(), py + 28, TAB_H, 12);
-            g.fill(closeX(), py + 28, closeX() + TAB_H, py + 40,
+            boolean lh = inside(mx, my, closeX(), py + 29, TAB_H, 12);
+            g.fill(closeX(), py + 29, closeX() + TAB_H, py + 41,
                     searchOpen ? Theme.accent() : lh ? 0xFF2C3139 : 0xFF22262C);
-            drawLoupe(g, closeX() + 3, py + 29, searchOpen ? 0xFF14110A : 0xFFD5D8DC);
+            drawLoupe(g, closeX() + 3, py + 30, searchOpen ? onAccent() : 0xFFD5D8DC);
         }
         if (searchOpen && scope != SET) box.render(g, mx, my, 0f);
 
         // крестик закрытия
-        boolean xHover = inside(mx, my, closeX(), py + 12, TAB_H, TAB_H);
-        g.fill(closeX(), py + 12, closeX() + TAB_H, py + 12 + TAB_H, xHover ? 0xFFB23A3A : 0xFF22262C);
-        g.drawString(font, "X", closeX() + (TAB_H - font.width("X")) / 2 + 1, py + 16, WHITE, false);
+        boolean xHover = inside(mx, my, closeX(), py + 8, TAB_H, TAB_H);
+        g.fill(closeX(), py + 8, closeX() + TAB_H, py + 8 + TAB_H, xHover ? 0xFFB23A3A : 0xFF22262C);
+        g.drawString(font, "X", closeX() + (TAB_H - font.width("X")) / 2 + 1, py + 12, WHITE, false);
 
         for (int i = 0; i < tabLabels.length; i++) {
             boolean link = i == linkTab;
@@ -439,7 +445,7 @@ public class ChronicleScreen extends Screen {
                 g.drawString(font, tabLabels[i], x + 7, y + 4, Theme.accent(), false);
             } else {
                 g.fill(x, y, x + tabW[i], y + TAB_H, on ? Theme.accent() : hover ? 0xFF2C3139 : 0xFF22262C);
-                g.drawString(font, tabLabels[i], x + 7, y + 4, on ? 0xFF14110A : 0xFFD5D8DC, false);
+                g.drawString(font, tabLabels[i], x + 7, y + 4, on ? onAccent() : 0xFFD5D8DC, false);
             }
         }
     }
@@ -498,7 +504,7 @@ public class ChronicleScreen extends Screen {
             boolean hover = inside(mx, my, chipX(i), cy(), w, CHIP_H);
             g.fill(chipX(i), cy(), chipX(i) + w, cy() + CHIP_H,
                     on ? Theme.accent() : hover ? 0xFF2C3139 : 0xFF22262C);
-            g.drawString(font, CHIPS[i], chipX(i) + 7, cy() + 4, on ? 0xFF14110A : 0xFFD5D8DC, false);
+            g.drawString(font, CHIPS[i], chipX(i) + 7, cy() + 4, on ? onAccent() : 0xFFD5D8DC, false);
         }
         boolean hover = inside(mx, my, styleX(), cy(), styleW(), CHIP_H);
         g.fill(styleX(), cy(), styleX() + styleW(), cy() + CHIP_H, hover ? 0xFF3A414B : 0xFF2C3139);
@@ -824,7 +830,7 @@ public class ChronicleScreen extends Screen {
                 dragBarTo(my);
                 return true;
             }
-            if (scope != SET && inside(mx, my, closeX(), py + 28, TAB_H, 12)) {
+            if (scope != SET && inside(mx, my, closeX(), py + 29, TAB_H, 12)) {
                 toggleSearch();
                 return true;
             }
