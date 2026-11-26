@@ -190,5 +190,16 @@
   "chronicle.title.adv": "ДОСТИЖЕНИЯ",
   "chronicle.tab.adv_link": "Достижения >",
   "chronicle.tab.stats_link": "< Статистика",
-  "chronicle.adv.tip_toggle": "Совет"
+  "chronicle.adv.tip_toggle": "Совет",
+  "chronicle.search.hint": "Поиск...",
+  "chronicle.search.results": "Результаты",
+  "chronicle.search.none": "Ничего не найдено",
+  "chronicle.srch.mined": "добыто",
+  "chronicle.srch.crafted": "создано",
+  "chronicle.srch.used": "использовано",
+  "chronicle.srch.broken": "сломано",
+  "chronicle.srch.picked": "подобрано",
+  "chronicle.srch.dropped": "выброшено",
+  "chronicle.srch.killed": "убито",
+  "chronicle.srch.killed_by": "убил вас"
 }

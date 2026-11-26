@@ -190,5 +190,16 @@
   "chronicle.title.adv": "ADVANCEMENTS",
   "chronicle.tab.adv_link": "Advancements >",
   "chronicle.tab.stats_link": "< Statistics",
-  "chronicle.adv.tip_toggle": "Tip"
+  "chronicle.adv.tip_toggle": "Tip",
+  "chronicle.search.hint": "Search...",
+  "chronicle.search.results": "Results",
+  "chronicle.search.none": "Nothing found",
+  "chronicle.srch.mined": "mined",
+  "chronicle.srch.crafted": "crafted",
+  "chronicle.srch.used": "used",
+  "chronicle.srch.broken": "broken",
+  "chronicle.srch.picked": "picked up",
+  "chronicle.srch.dropped": "dropped",
+  "chronicle.srch.killed": "killed",
+  "chronicle.srch.killed_by": "killed you"
 }

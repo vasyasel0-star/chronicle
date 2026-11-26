@@ -9,6 +9,7 @@ import java.util.Set;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.Component;
@@ -82,6 +83,10 @@ public class ChronicleScreen extends Screen {
     private int[] tabW = new int[0];
     private int linkTab = -1;
 
+    private EditBox box;
+    private boolean searchOpen;
+    private String query = "";
+
     public ChronicleScreen() {
         this(null, lastScope, lastPage);
         this.advMode = lastAdvMode;
@@ -110,6 +115,17 @@ public class ChronicleScreen extends Screen {
         py = (height - ph) / 2;
 
         layoutTabs();
+        box = new EditBox(font, closeX() - 3 - 150, py + 28, 150, 12, Component.empty());
+        box.setMaxLength(40);
+        box.setHint(Component.translatable("chronicle.search.hint"));
+        box.setValue(query);
+        box.setResponder(v -> {
+            query = v;
+            resetView();
+            rebuild();
+        });
+        box.visible = searchOpen;
+        addWidget(box);
         ClientEvents.requestStats();
         rebuild();
     }
@@ -185,7 +201,7 @@ public class ChronicleScreen extends Screen {
     }
 
     private boolean chipsOn() {
-        return scope == ADV && sel > 0 && !pages.isEmpty();
+        return scope == ADV && sel > 0 && !pages.isEmpty() && !searching();
     }
 
     private int ctop() {
@@ -202,7 +218,7 @@ public class ChronicleScreen extends Screen {
 
     /** «Древо» рисуется прямо экраном, а не строками. */
     private boolean customView() {
-        return scope == ADV && sel > 0 && !pages.isEmpty() && style() == 1 && pages.get(sel).items() != null;
+        return scope == ADV && sel > 0 && !pages.isEmpty() && !searching() && style() == 1 && pages.get(sel).items() != null;
     }
 
     private int viewH() {
@@ -233,10 +249,11 @@ public class ChronicleScreen extends Screen {
 
     private void rebuild() {
         Minecraft mc = Minecraft.getInstance();
+        boolean q = searching();
         pages = switch (scope) {
-            case WORLD -> PageBuilder.world(mc);
-            case ALL -> PageBuilder.all(mc);
-            case ADV -> ExtraPages.advancements(mc, advFilter, style(), expanded);
+            case WORLD -> q ? List.of(SearchPages.stats(mc, query)) : PageBuilder.world(mc);
+            case ALL -> q ? List.of(SearchPages.worlds(query)) : PageBuilder.all(mc);
+            case ADV -> ExtraPages.advancements(mc, advFilter, style(), expanded, q ? query : "");
             default -> ExtraPages.settings();
         };
         sel = pages.isEmpty() ? 0 : Mth.clamp(sel, 0, pages.size() - 1);
@@ -274,6 +291,36 @@ public class ChronicleScreen extends Screen {
         }
         scroll = Mth.clamp(scroll, 0.0, (double) maxScroll);
         panX = Mth.clamp(panX, 0.0, (double) maxPanX);
+    }
+
+    private boolean searching() {
+        return searchOpen && scope != SET && !query.isBlank();
+    }
+
+    private void toggleSearch() {
+        searchOpen = !searchOpen;
+        box.visible = searchOpen;
+        if (searchOpen) {
+            setFocused(box);
+            box.setFocused(true);
+        } else {
+            box.setFocused(false);
+            setFocused(null);
+            box.setValue("");
+            query = "";
+            resetView();
+            rebuild();
+        }
+    }
+
+    private void drawLoupe(GuiGraphics g, int x, int y, int color) {
+        g.fill(x + 2, y + 1, x + 7, y + 2, color);
+        g.fill(x + 2, y + 6, x + 7, y + 7, color);
+        g.fill(x + 1, y + 2, x + 2, y + 6, color);
+        g.fill(x + 7, y + 2, x + 8, y + 6, color);
+        g.fill(x + 7, y + 7, x + 8, y + 8, color);
+        g.fill(x + 8, y + 8, x + 9, y + 9, color);
+        g.fill(x + 9, y + 9, x + 10, y + 10, color);
     }
 
     private Component screenTitle() {
@@ -365,7 +412,15 @@ public class ChronicleScreen extends Screen {
         g.drawString(font, screenTitle().copy().withStyle(ChatFormatting.BOLD), 0, 0, Theme.accent(), true);
         ps.popPose();
 
-        g.drawString(font, subtitle(), px + 12, py + 28, DIM, false);
+        if (!searchOpen) g.drawString(font, subtitle(), px + 12, py + 28, DIM, false);
+
+        if (scope != SET) {
+            boolean lh = inside(mx, my, closeX(), py + 28, TAB_H, 12);
+            g.fill(closeX(), py + 28, closeX() + TAB_H, py + 40,
+                    searchOpen ? Theme.accent() : lh ? 0xFF2C3139 : 0xFF22262C);
+            drawLoupe(g, closeX() + 3, py + 29, searchOpen ? 0xFF14110A : 0xFFD5D8DC);
+        }
+        if (searchOpen && scope != SET) box.render(g, mx, my, 0f);
 
         // крестик закрытия
         boolean xHover = inside(mx, my, closeX(), py + 12, TAB_H, TAB_H);
@@ -769,6 +824,15 @@ public class ChronicleScreen extends Screen {
                 dragBarTo(my);
                 return true;
             }
+            if (scope != SET && inside(mx, my, closeX(), py + 28, TAB_H, 12)) {
+                toggleSearch();
+                return true;
+            }
+            if (searchOpen && scope != SET && box.mouseClicked(mx, my, button)) {
+                setFocused(box);
+                return true;
+            }
+            if (searchOpen) box.setFocused(false);
             for (int i = 0; i < tabLabels.length; i++) {
                 if (inside(mx, my, tabX[i], py + 12, tabW[i], TAB_H)) {
                     activateTab(i);
@@ -817,7 +881,7 @@ public class ChronicleScreen extends Screen {
                     }
                     idx++;
                 } else if (scope == ADV && r.kind() == Row.Kind.CARD) {
-                    if (sel == 0) { // обзор: клик по категории
+                    if (sel == 0 && !searching()) { // обзор: клик по категории
                         if (hit && button == 0) {
                             if (idx + 1 < pages.size()) selectPage(idx + 1);
                             return true;
@@ -874,6 +938,14 @@ public class ChronicleScreen extends Screen {
 
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        if (searchOpen && scope != SET && box.isFocused()) {
+            if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+                toggleSearch();
+                return true;
+            }
+            box.keyPressed(keyCode, scanCode, modifiers);
+            return true;
+        }
         if (ClientEvents.OPEN.matches(keyCode, scanCode)) {
             onClose();
             return true;

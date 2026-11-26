@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import net.minecraft.advancements.AdvancementHolder;
@@ -82,7 +83,8 @@ public final class ExtraPages {
     }
 
     /** filter: 0 все, 1 осталось, 2 выполнено. style: 0 карточки, 1 список, 2 сетка, 3 дерево. */
-    public static List<PageBuilder.Page> advancements(Minecraft mc, int filter, int style, Set<String> expanded) {
+    public static List<PageBuilder.Page> advancements(Minecraft mc, int filter, int style, Set<String> expanded,
+                                                      String query) {
         if (mc.player == null || mc.getConnection() == null) return List.of();
         ClientAdvancements ca = mc.getConnection().getAdvancements();
 
@@ -142,6 +144,8 @@ public final class ExtraPages {
             return i < 0 ? 100 : i;
         }).thenComparing(g -> g.name().getString()));
 
+        if (query != null && !query.isBlank()) return List.of(searchPage(groups, query, expanded));
+
         // обзор: карточки категорий (клик открывает категорию)
         List<Row> ov = new ArrayList<>();
         ov.add(Row.header(t("adv.overview")));
@@ -196,6 +200,27 @@ public final class ExtraPages {
             pages.add(new PageBuilder.Page(g.name(), r, g.icon(), g.all()));
         }
         return pages;
+    }
+
+    /** Поиск по всем категориям сразу: название, описание, совет, категория и название мода. */
+    private static PageBuilder.Page searchPage(List<Group> groups, String query, Set<String> expanded) {
+        String needle = query.toLowerCase(Locale.ROOT).trim();
+        List<Row> cards = new ArrayList<>();
+        for (Group g : groups) {
+            String mod = g.mod() == null ? "" : g.mod();
+            for (AdvItem a : g.kids()) {
+                if (cards.size() >= 100) break;
+                String hay = (a.title().getString() + " " + a.desc().getString() + " "
+                        + (a.tip() == null ? "" : a.tip().getString()) + " "
+                        + g.name().getString() + " " + mod).toLowerCase(Locale.ROOT);
+                if (hay.contains(needle)) cards.add(Row.card(card(a, expanded.contains(a.id()) ? 2 : 0)));
+            }
+        }
+        List<Row> rows = new ArrayList<>();
+        rows.add(Row.header(t("search.results").append(" (" + cards.size() + ")")));
+        if (cards.isEmpty()) rows.add(Row.note(t("search.none")));
+        rows.addAll(cards);
+        return new PageBuilder.Page(t("search.results"), rows, new ItemStack(Items.COMPASS));
     }
 
     private static int mode(int style, AdvItem a, Set<String> expanded) {
